@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import Cookies from 'js-cookie'
+import posthog from 'posthog-js'
 
 const UserContext = createContext()
 
@@ -16,6 +17,11 @@ export const UserProvider = ({ children }) => {
     Cookies.set('name', newUser.name)
     Cookies.set('gender', newUser.gender)
     Cookies.set('variant', newUser.variant)
+    posthog.capture('user_updated', {
+      name: newUser.name,
+      gender: newUser.gender,
+      variant: newUser.variant,
+    })
   }
 
   useEffect(() => {
